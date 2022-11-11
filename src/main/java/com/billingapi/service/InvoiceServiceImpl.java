@@ -65,11 +65,27 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		invoice.setIsItemOnSale(true);
 		invoice.setDiscountOnSale(invoice.getDiscountOnSale());
-
 		return invoicedao.save(invoice);
+		
+	}
+
+}
+	
+	/*
+	
+	@Override
+	public Invoice addDiscountPrice(Invoice invoice, int invoiceId) {
+		//Invoice invoice1 = invoicedao.findById(invoiceId).get();
+		if (invoice.getIsDeleted().equals(0)) {
+		invoice.setIsItemOnSale(true);
+		invoice.setDiscountOnSale(invoice.getDiscountOnSale());
+		return invoicedao.save(invoice);
+		} 
+		return invoice;
 	}
 }
 
+*/
 /*
  * 
  * public Object delete(int invoiceId) { Invoice invoice =
@@ -79,3 +95,4 @@ public class InvoiceServiceImpl implements InvoiceService {
  * 
  * }
  */
+

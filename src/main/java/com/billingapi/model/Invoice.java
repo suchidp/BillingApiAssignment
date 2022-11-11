@@ -10,6 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "invoice")
 public class Invoice {
@@ -34,9 +40,25 @@ public class Invoice {
 	private int userId;
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
-
-	// private List<Invoice> invoice;
 	
+	public Invoice() {
+		
+	}
+
+	public Invoice(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
+			Boolean isItemOnSale, double discountOnSale, int userId, Boolean isDeleted) {
+		
+		this.invoiceId = invoiceId;
+		this.itemName = itemName;
+		this.price = price;
+		this.tax = tax;
+		this.vat = vat;
+		this.discount = discount;
+		this.isItemOnSale = isItemOnSale;
+		this.discountOnSale = discountOnSale;
+		this.userId = userId;
+		this.isDeleted = isDeleted;
+	}
 
 	public int getInvoiceId() {
 		return invoiceId;
@@ -125,4 +147,10 @@ public class Invoice {
 				+ discountOnSale + ", userId=" + userId + ", isDeleted=" + isDeleted + "]";
 	}
 
+	
+
+	// private List<Invoice> invoice;
+	
+
+	
 }
