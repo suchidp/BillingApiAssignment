@@ -1,4 +1,4 @@
-package com.cybage.service;
+package com.billingapi.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cybage.dao.InvoiceDao;
-import com.cybage.model.Invoice;
+import com.billingapi.dao.InvoiceDao;
+import com.billingapi.model.Invoice;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -16,16 +16,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice save(Invoice invoice) {
-		// TODO Auto-generated method stub
+
 		return invoicedao.save(invoice);
 	}
 
 	@Override
 	public List<Invoice> getAllInvoice() {
-		// TODO Auto-generated method stub
+
 		return invoicedao.findAll();
 	}
-	
+
 	@Override
 	public Invoice findInvoicetById(int invoiceId) {
 		Optional<Invoice> invoice = invoicedao.findById(invoiceId);
@@ -34,7 +34,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public List<Invoice> saveAllInvoice(List<Invoice> invoice) {
-		// TODO Auto-generated method stub
+
 		return invoicedao.saveAll(invoice);
 	}
 
@@ -62,7 +62,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice addDiscountPrice(Invoice invoice, int invoiceId) {
-		// TODO Auto-generated method stub
+		
 		invoice.setIsItemOnSale(true);
 		invoice.setDiscountOnSale(invoice.getDiscountOnSale());
 

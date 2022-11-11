@@ -1,4 +1,4 @@
-package com.cybage.model;
+package com.billingapi.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,13 +9,13 @@ public class User {
 	private int userId;
 	private String userName;
 	public User(int userId, String userName) {
-		super();
+	
 		this.userId = userId;
 		this.userName = userName;
 	}
 	public User() {
-		super();
-		// TODO Auto-generated constructor stub
+		
+		
 	}
 	public int getUserId() {
 		return userId;

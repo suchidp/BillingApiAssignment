@@ -1,4 +1,4 @@
-package com.cybage.dto;
+package com.billingapi.controller.request;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.persistence.Column;
 
 import org.springframework.beans.BeanUtils;
 
-import com.cybage.model.Invoice;
+import com.billingapi.model.Invoice;
 
 public class InvoiceRequestDto {
 	private int invoiceId;
@@ -31,8 +31,7 @@ public class InvoiceRequestDto {
 	
 
 	public InvoiceRequestDto() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	
@@ -51,7 +50,7 @@ public class InvoiceRequestDto {
 
 	public InvoiceRequestDto(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
 			Boolean isItemOnSale, double discountOnSale, int userId, Boolean isDeleted, List<Invoice> invoice) {
-		super();
+	
 		this.invoiceId = invoiceId;
 		this.itemName = itemName;
 		this.price = price;

@@ -1,4 +1,4 @@
-package com.cybage.controller;
+package com.billingapi.controller;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cybage.dto.InvoiceRequestDto;
-import com.cybage.dto.InvoiceResponseDto;
-import com.cybage.model.Invoice;
-import com.cybage.service.InvoiceService;
-import com.cybage.service.InvoiceServiceImpl;
+import com.billingapi.controller.request.InvoiceRequestDto;
+import com.billingapi.controller.request.InvoiceResponseDto;
+import com.billingapi.model.Invoice;
+import com.billingapi.service.InvoiceService;
+import com.billingapi.service.InvoiceServiceImpl;
 
 @RestController
 @EnableAutoConfiguration

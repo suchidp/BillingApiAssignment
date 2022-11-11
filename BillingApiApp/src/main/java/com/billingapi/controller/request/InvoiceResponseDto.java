@@ -1,49 +1,39 @@
-package com.cybage.model;
+package com.billingapi.controller.request;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.beans.BeanUtils;
 
-@Entity
-@Table(name = "invoice")
-public class Invoice {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+import com.billingapi.model.Invoice;
+
+public class InvoiceResponseDto {
+
 	private int invoiceId;
-	@Column(name = "item_name")
 	private String itemName;
-	@Column(name = "price")
+
 	private BigDecimal price;
-	@Column(name = "tax")
+
 	private double tax;
-	@Column(name = "vat")
+
 	private double vat;
-	@Column(name = "discount")
+
 	private double discount;
-	@Column(name = "is_item_on_sale")
+
 	private Boolean isItemOnSale;
-	@Column(name = "discount_on_sale")
+
 	private double discountOnSale;
-	@Column(name = "user_id")
+
 	private int userId;
-	@Column(name = "is_deleted")
+
 	private Boolean isDeleted;
 
-	// private List<Invoice> invoice;
-	public Invoice() {
-		super();
-		// TODO Auto-generated constructor stub
+	public InvoiceResponseDto() {
+		
 	}
 
-	public Invoice(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
-			Boolean isItemOnSale, double discountOnSale, int userId, Boolean isDeleted, List<Invoice> invoice) {
-		super();
+	public InvoiceResponseDto(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
+			Boolean isItemOnSale, double discountOnSale, int userId, Boolean isDeleted) {
+		
 		this.invoiceId = invoiceId;
 		this.itemName = itemName;
 		this.price = price;
@@ -54,7 +44,10 @@ public class Invoice {
 		this.discountOnSale = discountOnSale;
 		this.userId = userId;
 		this.isDeleted = isDeleted;
-		// this.invoice = invoice;
+	}
+
+	public String getItemName() {
+		return itemName;
 	}
 
 	public int getInvoiceId() {
@@ -63,10 +56,6 @@ public class Invoice {
 
 	public void setInvoiceId(int invoiceId) {
 		this.invoiceId = invoiceId;
-	}
-
-	public String getItemName() {
-		return itemName;
 	}
 
 	public void setItemName(String itemName) {
@@ -137,11 +126,27 @@ public class Invoice {
 		this.isDeleted = isDeleted;
 	}
 
+	public static InvoiceResponseDto fromEntity(Invoice entity) {
+		InvoiceResponseDto invoiceResponseDto = new InvoiceResponseDto();
+		BeanUtils.copyProperties(entity, invoiceResponseDto);
+		invoiceResponseDto.setInvoiceId(entity.getInvoiceId());
+		invoiceResponseDto.setItemName(entity.getItemName());
+		invoiceResponseDto.setPrice(entity.getPrice());
+		invoiceResponseDto.setTax(entity.getTax());
+		invoiceResponseDto.setVat(entity.getVat());
+		invoiceResponseDto.setDiscount(entity.getDiscount());
+		invoiceResponseDto.setIsItemOnSale(entity.getIsItemOnSale());
+		invoiceResponseDto.setUserId(entity.getUserId());
+		invoiceResponseDto.setIsDeleted(entity.getIsDeleted());
+
+		return invoiceResponseDto;
+	}
+
 	@Override
 	public String toString() {
-		return "Invoice [invoiceId=" + invoiceId + ", itemName=" + itemName + ", price=" + price + ", tax=" + tax
-				+ ", vat=" + vat + ", discount=" + discount + ", isItemOnSale=" + isItemOnSale + ", discountOnSale="
-				+ discountOnSale + ", userId=" + userId + ", isDeleted=" + isDeleted + "]";
+		return "InvoiceResponseDto [invoiceId=" + invoiceId + ", itemName=" + itemName + ", price=" + price + ", tax="
+				+ tax + ", vat=" + vat + ", discount=" + discount + ", isItemOnSale=" + isItemOnSale
+				+ ", discountOnSale=" + discountOnSale + ", userId=" + userId + ", isDeleted=" + isDeleted + "]";
 	}
 
 }

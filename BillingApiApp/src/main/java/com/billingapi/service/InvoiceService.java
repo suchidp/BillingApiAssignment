@@ -1,10 +1,10 @@
-package com.cybage.service;
+package com.billingapi.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cybage.model.Invoice;
+import com.billingapi.model.Invoice;
 
 public interface InvoiceService {
 	public Invoice save(Invoice invoice);
