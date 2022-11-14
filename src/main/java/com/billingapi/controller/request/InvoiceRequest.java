@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.billingapi.model.Invoice;
 
-public class InvoiceRequestDto {
+public class InvoiceRequest {
 	private int invoiceId;
 	private String itemName;
 
@@ -30,7 +30,7 @@ public class InvoiceRequestDto {
 	private Boolean isDeleted;
 	
 
-	public InvoiceRequestDto() {
+	public InvoiceRequest() {
 		
 	}
 
@@ -48,7 +48,7 @@ public class InvoiceRequestDto {
 
 
 
-	public InvoiceRequestDto(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
+	public InvoiceRequest(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
 			Boolean isItemOnSale, double discountOnSale, int userId, Boolean isDeleted, List<Invoice> invoice) {
 	
 		this.invoiceId = invoiceId;
@@ -146,7 +146,7 @@ public class InvoiceRequestDto {
 		this.invoice = invoice;
 	}
 */
-	public static Invoice toEntity(InvoiceRequestDto invoiceRequestDto) {
+	public static Invoice toEntity(InvoiceRequest invoiceRequestDto) {
 		Invoice entity = new Invoice();
 		entity.setInvoiceId(entity.getInvoiceId());
 		entity.setItemName(entity.getItemName());
@@ -160,8 +160,8 @@ public class InvoiceRequestDto {
 		BeanUtils.copyProperties(invoiceRequestDto, entity);
 		return entity;
 	}
-	public static InvoiceResponseDto fromEntity(Invoice entity) {
-		InvoiceResponseDto invoiceResponseDto = new InvoiceResponseDto();
+	public static InvoiceResponse fromEntity(Invoice entity) {
+		InvoiceResponse invoiceResponseDto = new InvoiceResponse();
 		BeanUtils.copyProperties(entity, invoiceResponseDto);
 		invoiceResponseDto.setInvoiceId(entity.getInvoiceId());
 		invoiceResponseDto.setItemName(entity.getItemName());

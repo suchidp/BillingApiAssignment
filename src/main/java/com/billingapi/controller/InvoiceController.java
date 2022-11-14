@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.billingapi.controller.request.InvoiceRequestDto;
-import com.billingapi.controller.request.InvoiceResponseDto;
+import com.billingapi.controller.request.InvoiceRequest;
+import com.billingapi.controller.request.InvoiceResponse;
 import com.billingapi.model.Invoice;
 import com.billingapi.service.InvoiceService;
 import com.billingapi.service.InvoiceServiceImpl;
@@ -71,7 +71,7 @@ public class InvoiceController {
 	 */
 
 	@PostMapping("/save")
-	public ResponseEntity<?> addInvoice(InvoiceRequestDto invoiceRequestDto) {
+	public ResponseEntity<?> addInvoice(InvoiceRequest invoiceRequestDto) {
 		Invoice invoice = new Invoice();
 		invoice.setItemName(invoiceRequestDto.getItemName());
 		invoice.setPrice(invoiceRequestDto.getPrice());
@@ -83,7 +83,7 @@ public class InvoiceController {
 		invoice.setIsItemOnSale(invoiceRequestDto.getIsItemOnSale());
 		invoice.setDiscountOnSale(invoiceRequestDto.getDiscountOnSale());
 		invoice.setIsDeleted(invoiceRequestDto.getIsDeleted());
-		return new ResponseEntity<>(InvoiceResponseDto.fromEntity(invoiceService.save(invoice)), HttpStatus.OK);
+		return new ResponseEntity<>(InvoiceResponse.fromEntity(invoiceService.save(invoice)), HttpStatus.OK);
 	}
 
 	@PostMapping("/invoicerequest")
@@ -93,23 +93,44 @@ public class InvoiceController {
 	}
 
 	@PutMapping("/delete/{invoiceId}")
-	public ResponseEntity<?> deleteInvoice(@PathVariable int invoiceId, InvoiceRequestDto invoiceRequestDto) {
+	public ResponseEntity<?> deleteInvoice(@PathVariable int invoiceId, InvoiceRequest invoiceRequestDto) {
 		Invoice invoice = invoiceService.findInvoicetById(invoiceId);
 		invoice.setIsDeleted(invoiceRequestDto.getIsDeleted());
 		System.out.println("delete request " + invoiceId);
-		return new ResponseEntity<>(InvoiceResponseDto.fromEntity(invoiceService.deleteInvoice(invoice, invoiceId)),
+		return new ResponseEntity<>(InvoiceResponse.fromEntity(invoiceService.deleteInvoice(invoice, invoiceId)),
 				HttpStatus.OK);
 	}
 
 	@PutMapping("/addDiscountprice/{invoiceId}")
-	public ResponseEntity<?> addDiscountPrice(@PathVariable int invoiceId, InvoiceRequestDto invoiceRequestDto) {
+	public ResponseEntity<?> addDiscountPrice(@PathVariable int invoiceId, InvoiceRequest invoiceRequestDto) {
 		Invoice invoice = invoiceService.findInvoicetById(invoiceId);
 		invoice.setIsItemOnSale(invoiceRequestDto.getIsItemOnSale());
 
 		invoice.setDiscountOnSale(invoiceRequestDto.getDiscountOnSale());
 		System.out.println("addDiscount price " + invoiceId);
-		return new ResponseEntity<>(InvoiceResponseDto.fromEntity(invoiceService.addDiscountPrice(invoice, invoiceId)),
+		return new ResponseEntity<>(InvoiceResponse.fromEntity(invoiceService.addDiscountPrice(invoice, invoiceId)),
 				HttpStatus.OK);
 	}
+	/*
+	@PostMapping("")
+	public ResponseEntity<?> addInvoice(@RequestBody InvoiceRequest invoiceRequestDto) {
+		
+		
+		Invoice invoice =InvoiceRequest.toEntity(invoiceRequestDto);
+		invoice=invoiceService.save(invoice);
+		return new ResponseEntity<>(invoice, HttpStatus.CREATED);
+	
+	}
+	
+	@PostMapping("saveall")
+	public ResponseEntity<?> addInvoiceList(@RequestBody InvoiceRequest invoiceRequestDto) {
+		
+		
+		Invoice invoice =InvoiceRequest.toEntity(invoiceRequestDto);
+		invoice=invoiceService.save(invoice);
+		return new ResponseEntity<>(invoice, HttpStatus.CREATED);
+	
+	}
 
+*/
 }

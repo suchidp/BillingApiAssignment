@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.billingapi.model.Invoice;
 
-public class InvoiceResponseDto {
+public class InvoiceResponse {
 
 	private int invoiceId;
 	private String itemName;
@@ -27,11 +27,11 @@ public class InvoiceResponseDto {
 
 	private Boolean isDeleted;
 
-	public InvoiceResponseDto() {
+	public InvoiceResponse() {
 		
 	}
 
-	public InvoiceResponseDto(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
+	public InvoiceResponse(int invoiceId, String itemName, BigDecimal price, double tax, double vat, double discount,
 			Boolean isItemOnSale, double discountOnSale, int userId, Boolean isDeleted) {
 		
 		this.invoiceId = invoiceId;
@@ -126,8 +126,8 @@ public class InvoiceResponseDto {
 		this.isDeleted = isDeleted;
 	}
 
-	public static InvoiceResponseDto fromEntity(Invoice entity) {
-		InvoiceResponseDto invoiceResponseDto = new InvoiceResponseDto();
+	public static InvoiceResponse fromEntity(Invoice entity) {
+		InvoiceResponse invoiceResponseDto = new InvoiceResponse();
 		BeanUtils.copyProperties(entity, invoiceResponseDto);
 		invoiceResponseDto.setInvoiceId(entity.getInvoiceId());
 		invoiceResponseDto.setItemName(entity.getItemName());

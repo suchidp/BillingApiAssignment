@@ -6,13 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.billingapi.dao.InvoiceDao;
 import com.billingapi.model.Invoice;
+
+import com.billingapi.repository.InvoiceRepository;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 	@Autowired
-	private InvoiceDao invoicedao;
+	private InvoiceRepository invoicedao;
 
 	@Override
 	public Invoice save(Invoice invoice) {
