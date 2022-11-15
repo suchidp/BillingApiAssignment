@@ -1,10 +1,8 @@
 package com.billingapi.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.billingapi.model.Invoice;
+
+import java.util.List;
 
 public interface InvoiceService {
 	public Invoice save(Invoice invoice);
@@ -13,7 +11,7 @@ public interface InvoiceService {
 
 	public List<Invoice> getAllInvoice();
 
-	// public Invoice save(Invoice Invoice);
+	
 	public Invoice deleteInvoice(Invoice invoice, int invoiceId);
 
 	public Invoice findInvoicetById(int invoiceId);
