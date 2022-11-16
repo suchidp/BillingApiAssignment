@@ -1,23 +1,22 @@
 package com.billingapi.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.billingapi.model.Invoice;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public interface InvoiceService {
-	public Invoice save(Invoice invoice);
+	 Invoice save(Invoice invoice);
 
-	public List<Invoice> saveAllInvoice(List<Invoice> invoice);
+	 List<Invoice> saveAllInvoice(List<Invoice> invoice);
 
-	public List<Invoice> getAllInvoice();
+	 List<Invoice> getAllInvoice();
 
-	// public Invoice save(Invoice Invoice);
-	public Invoice deleteInvoice(Invoice invoice, int invoiceId);
+	
+	 Invoice deleteInvoice( int invoiceId);
 
-	public Invoice findInvoicetById(int invoiceId);
+	 Invoice findInvoiceById(int invoiceId);
 
-	public Invoice addDiscountPrice(Invoice invoice, int invoiceId);
+
 
 }
