@@ -11,49 +11,60 @@ import java.util.Optional;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
-	@Autowired
-	private InvoiceRepository invoiceRepository;
-
-	@Override
-	public Invoice save(Invoice invoice) {
-
-		return invoiceRepository.save(invoice);
-	}
-
-	@Override
-	public List<Invoice> getAllInvoice() {
-
-		return invoiceRepository.findAll();
-	}
-
-
-	@Override
-	public Invoice findInvoiceById(int invoiceId) {
-		Optional<Invoice> invoice = invoiceRepository.findById(invoiceId);
-		return invoice.orElse(null);
-	}
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
 
 
 
-	@Override
-	public List<Invoice> saveAllInvoice(List<Invoice> invoice) {
+        /*The method used to save  the Invoice */
+        @Override
+        public Invoice save(Invoice invoice) {
 
-		return invoiceRepository.saveAll(invoice);
-	}
+            return invoiceRepository.save(invoice);
+        }
+
+        /* The method used to  get the List  of All invoices.
+        */
+    @Override
+    public List<Invoice> getAllInvoice() {
+
+        return invoiceRepository.findAll();
+    }
+
+         /*
+         *The method used to  get the List  of All invoices.
+         *It also check null value.  .
+         */
+
+    @Override
+    public Invoice findInvoiceById(int invoiceId) {
+        Optional<Invoice> invoice = invoiceRepository.findById(invoiceId);
+        return invoice.orElse(null);
+    }
 
 
-	@Override
-	public Invoice deleteInvoice(int invoiceId) {
-		Invoice invoice =invoiceRepository.findById(invoiceId).get();
-		if (invoice.isDeleted()== false) {
-          invoice.setDeleted(true);
-			System.out.println("in voice is deleted successfully  " + invoiceId);
-			invoiceRepository.save(invoice);
-		}
-			return invoiceRepository.save(invoice);
-		}
-	}
+    @Override
+    public List<Invoice> saveAllInvoice(List<Invoice> invoice) {
+
+        return invoiceRepository.saveAll(invoice);
+    }
+
+      /*
+       * The method used to  delete the invoice.
+       This method check  an invoice is present or not   .
+       */
+    @Override
+    public Invoice deleteInvoice(int invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        if (invoice.isDeleted())equals(false); {
+            invoice.setDeleted(true);
+
+            invoiceRepository.save(invoice);
+        }
+        return invoiceRepository.save(invoice);
+    }
+}
 
 
 

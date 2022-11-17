@@ -18,8 +18,8 @@ import java.util.Date;
 public class InvoiceRequest {
     private int invoiceId;
     @NotNull(message = "itemName must not be null")
-    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$",
-            message = "itemName must be of 3 to 12 length with no special characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]{3,30}$",
+            message = "itemName must be of 3 to 30 length with no special characters")
     private String itemName;
     @DecimalMin(value = "0.01")
     @Digits(integer=8, fraction=2)
@@ -34,11 +34,21 @@ public class InvoiceRequest {
     @Digits(integer=3, fraction=2)
     private double discount;
 
-    private Boolean isItemOnSale;
+    private boolean isItemOnSale;
     @DecimalMin(value = "0.01")
     @Digits(integer=3, fraction=2)
     private double discountOnSale;
 
+    private String description;
+
+
+    @Min(value = 0, message = "Quantity has to be non negative ")
+    private Integer quantity;
+
+
+    @DecimalMin(value = "0.00", message = "Price has to be non negative number")
+    private BigDecimal total;
+    private Date date;
 
     public static Invoice toEntity(InvoiceRequest invoiceRequest) {
         Invoice entity = new Invoice();
@@ -48,9 +58,12 @@ public class InvoiceRequest {
         entity.setTax(invoiceRequest.getTax());
         entity.setVat(invoiceRequest.getVat());
         entity.setDiscount(invoiceRequest.getDiscount());
-        entity.setItemOnSale(invoiceRequest.getIsItemOnSale());
+        entity.setItemOnSale(invoiceRequest.isItemOnSale());
         entity.setDiscountOnSale(invoiceRequest.getDiscountOnSale());
-
+        entity.setDescription(invoiceRequest.getDescription());
+        entity.setQuantity(invoiceRequest.getQuantity());
+        entity.setTotal(invoiceRequest.getTotal());
+        entity.setDate(invoiceRequest.getDate());
         return entity;
     }
 

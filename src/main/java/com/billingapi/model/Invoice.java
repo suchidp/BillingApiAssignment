@@ -9,6 +9,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -39,6 +40,21 @@ public class Invoice {
 	private int userId;
 	@Column(name = "is_deleted")
 	private boolean isDeleted ;
+	@Column(name = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date date;
+
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "quantity")
+	private Integer quantity;
+
+	@Column(name = "total")
+	private BigDecimal total;
+
 
 
 }
