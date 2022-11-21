@@ -1,9 +1,17 @@
 package com.billingapi.exception;
 
-public class InvoiceNotFoundException extends Exception {
-    private static final long serialVersionUID = 1L;
 
-    public InvoiceNotFoundException(String message) {
+
+/*
+     * The custom Exception used to  check   an invoice is present or not   .
+     */
+
+public class InvoiceNotFoundException extends Exception{
+	private static final long serialVersionUID = 1L;
+	public InvoiceNotFoundException (String message) {
         super(message);
     }
+	
+	
+
 }

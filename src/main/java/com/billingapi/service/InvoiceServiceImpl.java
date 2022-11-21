@@ -1,5 +1,8 @@
 package com.billingapi.service;
 
+
+
+
 import com.billingapi.model.Invoice;
 import com.billingapi.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,29 +20,49 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
 
-        /*The method used to save  the Invoice */
-        @Override
-        public Invoice save(Invoice invoice) {
+    /*The method used to save  the Invoice */
+    @Override
+    public Invoice save(Invoice invoice) {
+       /* To calculate Total value */
+        BigDecimal price = invoice.getPrice();
+        double tax = invoice.getTax();
+        double vat = invoice.getVat();
+        double discount = invoice.getDiscount();
+        double discountOnSale = invoice.getDiscountOnSale();
+        int quantity = invoice.getQuantity();
+      //conversion into bigdecimal
+        BigDecimal newtax = new BigDecimal(tax);
+        BigDecimal newvat = new BigDecimal(vat);
+        BigDecimal newdiscount = new BigDecimal(discount);
+        BigDecimal newdiscountonsale = new BigDecimal(discountOnSale);
+        BigDecimal newquantity = new BigDecimal(quantity);
 
-            return invoiceRepository.save(invoice);
-        }
+        BigDecimal sum;
+        BigDecimal newSum = (sum = price.add(newtax).add(newvat)).subtract(newdiscount).subtract(newdiscountonsale);
 
-        /* The method used to  get the List  of All invoices.
-        */
+        BigDecimal subtotal = newSum.multiply(newquantity);
+        invoice.setTotal(subtotal);
+
+        return invoiceRepository.save(invoice);
+    }
+
+
+    /* The method used to  get the List  of All invoices.
+     */
     @Override
     public List<Invoice> getAllInvoice() {
 
         return invoiceRepository.findAll();
     }
-
-         /*
-         *The method used to  get the List  of All invoices.
-         *It also check null value.  .
-         */
+    /*
+     *The method used to  get the List  of All invoices.
+     *It also check null value.  .
+     */
 
     @Override
     public Invoice findInvoiceById(int invoiceId) {
         Optional<Invoice> invoice = invoiceRepository.findById(invoiceId);
+
         return invoice.orElse(null);
     }
 
@@ -50,21 +73,25 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceRepository.saveAll(invoice);
     }
 
-      /*
-       * The method used to  delete the invoice.
-       This method check  an invoice is present or not   .
-       */
+
+    /*
+     * The method used to  delete the invoice.
+     This method check  an invoice is present or not   .
+     */
     @Override
     public Invoice deleteInvoice(int invoiceId) {
         Invoice invoice = invoiceRepository.findById(invoiceId).get();
-        if (invoice.isDeleted())equals(false); {
-            invoice.setDeleted(true);
 
-            invoiceRepository.save(invoice);
+
+            if (invoice.isDeleted()) equals(false);
+            {
+                invoice.setDeleted(true);
+
+                invoiceRepository.save(invoice);
+            }
+            return invoiceRepository.save(invoice);
         }
-        return invoiceRepository.save(invoice);
     }
-}
 
 
 

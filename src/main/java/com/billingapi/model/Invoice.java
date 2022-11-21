@@ -5,11 +5,11 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
+
 
 @Data
 @Entity
@@ -32,6 +32,9 @@ public class Invoice {
 	private double vat;
 	@Column(name = "discount")
 	private double discount;
+
+	
+
 	@Column(name = "is_item_on_sale")
 	private boolean isItemOnSale;
 	@Column(name = "discount_on_sale")
@@ -41,10 +44,8 @@ public class Invoice {
 	@Column(name = "is_deleted")
 	private boolean isDeleted ;
 	@Column(name = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date date;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+	private LocalDateTime timestamp;
 
 	@Column(name = "description")
 	private String description;

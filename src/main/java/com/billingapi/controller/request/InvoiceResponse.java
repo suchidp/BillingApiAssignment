@@ -7,6 +7,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -25,7 +26,7 @@ public class InvoiceResponse {
     private String description;
     private Integer quantity;
     private BigDecimal total;
-    private Date date;
+    private LocalDateTime timestamp;
 
     public static InvoiceResponse fromEntity(Invoice entity) {
         InvoiceResponse invoiceResponse = new InvoiceResponse();
@@ -37,7 +38,7 @@ public class InvoiceResponse {
         invoiceResponse.setDiscount(entity.getDiscount());
         invoiceResponse.setItemOnSale(entity.isItemOnSale());
         invoiceResponse.setDiscountOnSale(entity.getDiscountOnSale());
-        invoiceResponse.setDate(entity.getDate());
+        invoiceResponse.setTimestamp(entity.getTimestamp().now());
         invoiceResponse.setDescription(entity.getDescription());
         invoiceResponse.setQuantity(entity.getQuantity());
         invoiceResponse.setTotal(entity.getTotal());
