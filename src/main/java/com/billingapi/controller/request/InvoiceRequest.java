@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.util.Date;
+
 
 
 
@@ -20,39 +20,38 @@ import java.util.Date;
 public class InvoiceRequest {
 
     @NotNull(message = "itemName must not be null")
-    @Pattern(regexp = "^[a-zA-Z0-9]{3,30}$",
-            message = "itemName must be of 3 to 30 length with no special characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]{3,30}$")
     private String itemName;
     @DecimalMin(value = "0.01")
-    @Digits(integer=8, fraction=2 ,message = "Price must be less than 100000000")
+    @Digits(integer=8, fraction=2 )
     private BigDecimal price;
     @DecimalMin(value = "0.01")
-    @Digits(integer=3, fraction=2,message = "Tax must be less than 1000")
+    @Digits(integer=3, fraction=2)
     private double tax;
     @DecimalMin(value = "0.01")
-    @Digits(integer=3, fraction=2,message = "Vat must be less than 1000")
+    @Digits(integer=3, fraction=2)
     private double vat;
     @DecimalMin(value = "0.01")
-    @Digits(integer=2, fraction=2,message = "Discount must be less than 100")
+    @Digits(integer=2, fraction=2)
     private double discount;
 
     private boolean isItemOnSale;
     @DecimalMin(value = "0.01")
-    @Digits(integer=3, fraction=2,message = "DiscountOnSale must be less than 1000")
+    @Digits(integer=3, fraction=2)
     private double discountOnSale;
 
     private String description;
 
 
-    @Min(value = 1, message = "Quantity must be between 1 and 1000")
-    @Max(value = 1000   ,message = "Quantity must be between 1 and 1000")
+    @Min(value = 1)
+    @Max(value = 1000   )
     private Integer quantity;
 
 
 
     @Digits(integer=8, fraction=2)
       private BigDecimal total;
-   // private Date date;
+
 
 
 

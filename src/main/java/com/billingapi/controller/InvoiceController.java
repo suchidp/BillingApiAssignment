@@ -7,8 +7,9 @@ import com.billingapi.controller.request.InvoiceResponse;
 import com.billingapi.exception.InvoiceNotFoundException;
 import com.billingapi.model.Invoice;
 import com.billingapi.service.InvoiceService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/invoice")
 @Validated
 public class InvoiceController {
-    static Logger logger = LogManager.getLogger(InvoiceController.class);
+
     @Autowired
     private InvoiceService invoiceService;
 
@@ -37,12 +39,13 @@ public class InvoiceController {
     public ResponseEntity<?> findInvoiceById(@PathVariable int invoiceId) throws InvoiceNotFoundException {
         Invoice invoice = invoiceService.findInvoiceById(invoiceId);
         if (invoice == null) {
+           // log.error("invoice of " +  invoice.getInvoiceId()+ " is not found");
             throw new InvoiceNotFoundException("Invoice not found");
 
         }
 
 
-        logger.info("Invoice " + invoice.getItemName() + "  found");
+       log.info("Invoice  of " + invoice.getItemName() + "  found");
         return new ResponseEntity<>(invoice, HttpStatus.OK);
     }
 
@@ -64,11 +67,14 @@ public class InvoiceController {
     @DeleteMapping("/{invoiceId}")
     public ResponseEntity<?> deleteInvoice(@PathVariable int invoiceId) throws InvoiceNotFoundException {
         Invoice invoice = invoiceService.findInvoiceById(invoiceId);
+        log.info("Fetching user with invoiceId {}", invoiceId);
         if (invoice == null) {
+
+           // log.error("invoice of " +  invoice.getInvoiceId()+ " is not found");
             throw new InvoiceNotFoundException("Invoice not found");
 
         }
-        logger.info("Invoice " + invoice.getItemName() + " deleted");
+        log.info("Invoice  of " + invoice.getItemName() + " deleted");
         return new ResponseEntity<>(invoiceService.deleteInvoice(invoiceId), HttpStatus.OK);
     }
 
@@ -79,8 +85,10 @@ public class InvoiceController {
      */
     @PostMapping()
     public ResponseEntity<?> addInvoice(@Valid @RequestBody InvoiceRequest invoiceRequest) {
+
         Invoice invoice = invoiceRequest.toEntity(invoiceRequest);
-        logger.info("Invoice " + invoice.getItemName() + " added");
+
+       log.info("Invoice of  " + invoice.getInvoiceId() + "and  "+ invoice.getItemName() + " added");
         return new ResponseEntity<>(InvoiceResponse.fromEntity(invoiceService.save(invoice)), HttpStatus.CREATED);
 
     }
