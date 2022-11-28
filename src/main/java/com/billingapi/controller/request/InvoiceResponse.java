@@ -1,18 +1,12 @@
 package com.billingapi.controller.request;
-
 import com.billingapi.model.Invoice;
 import lombok.*;
-
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class InvoiceResponse {
-
     private int invoiceId;
     private String itemName;
     private BigDecimal price;
@@ -40,7 +34,6 @@ public class InvoiceResponse {
         invoiceResponse.setDescription(entity.getDescription());
         invoiceResponse.setQuantity(entity.getQuantity());
         invoiceResponse.setTotal(entity.getTotal());
-
         return invoiceResponse;
     }
 
