@@ -4,14 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestControllerAdvice
@@ -34,7 +34,6 @@ public class GlobalExceptionHandler {
 
     /*
     Exception Handling of   handleHttpRequestMethodNotSupported
-
     Using HttpRequestMethodNotSupportedException check Method is supported or not
     * @param ex HttpRequestMethodNotSupportedException exception to handle
 	 * @param request the current request
@@ -77,38 +76,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex, WebRequest request) {
-        ErrorModelResponse error = new ErrorModelResponse();
-        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            error.getErrors().add(
-                    new ExceptionResponse("The field " + fieldError.getField() + "  has  " + fieldError.getDefaultMessage()));
-        }
-        return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+
+
+
+        List<String> message = new ArrayList<String>();
+        message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error ->"The field "+  error.getField() + " has "  +error.getDefaultMessage())
+                .collect(Collectors.toList());
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(message);
+        return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
     }
 
-
-    /*
-    Exception Handling  to check ConstraintViolationException
-
-	 * @param ex the exception to handle
-	 * @param request the current request
-	 * @return a  ResponseEntity for the response to use
-     */
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintValidationException(
-            ConstraintViolationException ex, WebRequest request) {
-        ErrorModelResponse error = new ErrorModelResponse();
-        for (ConstraintViolation exceptionResponse : ex.getConstraintViolations()) {
-            error.getErrors().add(
-                    new ExceptionResponse(exceptionResponse.getMessage()));
-        }
-        return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
-    }
 
 
     /*
     Exception Handling  to check BindException
-
 	 * @param ex the exception to handle
 	 * @param request the current request
 	 * @return a  ResponseEntity for the response to use
@@ -143,5 +128,3 @@ public class GlobalExceptionHandler {
     }
 
 }
-
-

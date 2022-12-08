@@ -5,9 +5,9 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 
-
-
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 public class InvoiceRequest {
 
@@ -18,7 +18,6 @@ public class InvoiceRequest {
     @Digits(integer=8, fraction=2 )
     private BigDecimal price;
 
-    @DecimalMin(value = "0.01")
     @Digits(integer=2, fraction=2)
     private double tax;
 

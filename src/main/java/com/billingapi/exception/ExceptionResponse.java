@@ -2,6 +2,7 @@ package com.billingapi.exception;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 
 @Data
@@ -9,4 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExceptionResponse {
     private String message;
+
+    public ExceptionResponse(List<String> message) {
+    }
+
+
+
 }
