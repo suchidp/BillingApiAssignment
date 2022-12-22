@@ -46,9 +46,8 @@ public class InvoiceControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-    private Object BigDecimal;
     private String INVALID_INVOICE_ID_URL;
-    private Object doubles;
+
 
 
     Invoice invoice = Invoice.builder()
@@ -71,9 +70,7 @@ public class InvoiceControllerTest {
      * JUnit test to Create new Invoice  which throws exception
      * Negative scenario to test Invoice using @ParameterizedTest  and @MethodSource Annotations because Bigdecimal type is not supported in @ValueSource.
      * InvoiceRequest a request Dto which give the request  if  price is greater Than 99999999  and    if Price is zero,
-     * * then it throws  MethodArgumentNotValidException.,
-     * then it throws  MethodArgumentNotValidException.
-     *
+     *  then it throws  MethodArgumentNotValidException.
      * @return the result or output using assert statements.
      */
 
@@ -116,7 +113,6 @@ public class InvoiceControllerTest {
      * Negative scenario to test Invoice using @ParameterizedTest  and @ValueSource Annotations
      * InvoiceRequest a request Dto which give the request  if item name is invalid and is in not between 3 to 30 ,
      * then it throws  MethodArgumentNotValidException.
-     *
      * @return the result or output using assert statements.
      */
 
@@ -153,7 +149,6 @@ public class InvoiceControllerTest {
     /**
      * JUnit test  which throws  HttpRequestMethodNotSupported exception
      * Negative  scenario to test if method type is invalid
-     *
      * @return the result or output using assert statements.
      */
     @Test
@@ -170,7 +165,6 @@ public class InvoiceControllerTest {
                 .quantity(999999990)
                 .total(new BigDecimal("98000.0"))
                 .description("good")
-
                 .build();
 
         given(invoiceService.save(any(Invoice.class)))
@@ -180,9 +174,7 @@ public class InvoiceControllerTest {
         ResultActions response = mockMvc.perform(put("/invoice")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newInvoice)));
-
         // then - verify the result or output using assert statements
-
         response.andExpect(status().isMethodNotAllowed());
 
     }
@@ -190,10 +182,8 @@ public class InvoiceControllerTest {
     /**
      * JUnit test  which throws  MethodArgumentTypeMismatch exception
      * Negative  scenario to test if method argument type is mismatch by using  INVALID_INVOICE_ID_URL
-     *
      * @return the result or output using assert statements.
      */
-
     @Test
     public void should_throw_exception_whenCreateInvoice_ifMethodArgumentTypeMismatch() throws Exception {
 
@@ -214,15 +204,11 @@ public class InvoiceControllerTest {
      * JUnit test to Create new Invoice  which throws exception
      * Positive scenario Test to Create new Invoice
      * InvoiceRequest a request Dto which give the request  to add new Invoice
-     * and return  InvoiceResponse
-     *
      * @return the result or output using assert statements.
      */
 
     @Test
     public void givenInvoiceObject_whenCreateInvoice_thenReturnaddInvoice() throws Exception {
-
-
         InvoiceRequest invoiceRequest = InvoiceRequest.builder()
                 .itemName("jeans")
                 .price(new BigDecimal("98000.0"))
@@ -280,7 +266,6 @@ public class InvoiceControllerTest {
 
     @ParameterizedTest
     @ValueSource(doubles = {100.00, 99.999})
-
     public void should_throw_exception_whenCreateInvoice_ifTaxIsGreaterThan99_thenReturnaddInvoiceFailed(double tax) throws Exception {
         InvoiceRequest newInvoice = InvoiceRequest.builder()
                 .itemName("jeans")
