@@ -41,6 +41,8 @@ public class InvoiceRequest {
     @Digits(integer=8, fraction=2)
       private BigDecimal total;
 
+
+
     public static Invoice toEntity(InvoiceRequest invoiceRequest) {
         Invoice entity = new Invoice();
         entity.setItemName(invoiceRequest.getItemName());
