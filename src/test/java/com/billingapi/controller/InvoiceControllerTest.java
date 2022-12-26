@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -66,84 +67,9 @@ public class InvoiceControllerTest {
             .total(new BigDecimal("205800.0"))
             .build();
 
-    /**
-     * JUnit test to Create new Invoice  which throws exception
-     * Negative scenario to test Invoice using @ParameterizedTest  and @MethodSource Annotations because Bigdecimal type is not supported in @ValueSource.
-     * InvoiceRequest a request Dto which give the request  if  price is greater Than 99999999  and    if Price is zero,
-     *  then it throws  MethodArgumentNotValidException.
-     * @return the result or output using assert statements.
-     */
-
-    @ParameterizedTest
-    @MethodSource("priceChecks")
-    public void should_throw_exception_whenCreateInvoice_ifPriceIsGreaterThan99999999_thenReturnaddInvoiceFailed(BigDecimal input) throws Exception {
-        InvoiceRequest newInvoice = InvoiceRequest.builder()
-                .itemName("jeans")
-                .price(input)
-                .tax(10.00)
-                .vat(15.00)
-                .discount(20.00)
-                .isItemOnSale(true)
-                .discountOnSale(10.00)
-                .quantity(5)
-                .description("good")
-                .build();
-        given(invoiceService.save(any(Invoice.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
-        // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/invoice")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newInvoice)));
-        // then - verify the result or output using assert statements
-        response.andDo(print()).
-                andExpect(status().isBadRequest());
-
-    }
-
-    public static Stream<BigDecimal> priceChecks() {
-        return Stream.of(
-                new BigDecimal(2058000000000.00), new BigDecimal(0.00), new BigDecimal(99999999.999), new BigDecimal(20580000000000000000.00));
 
 
-    }
 
-
-    /**
-     * JUnit test to Create new Invoice  which throws exception
-     * Negative scenario to test Invoice using @ParameterizedTest  and @ValueSource Annotations
-     * InvoiceRequest a request Dto which give the request  if item name is invalid and is in not between 3 to 30 ,
-     * then it throws  MethodArgumentNotValidException.
-     * @return the result or output using assert statements.
-     */
-
-
-    @ParameterizedTest
-    @ValueSource(strings = {"JEANS*", "jeans**", "ja", "JEANSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"})
-    public void should_throw_exception_whenCreateInvoice_ifItemNameIsInvalid_thenReturnaddInvoiceFailed(String input) throws Exception {
-        InvoiceRequest newInvoice = InvoiceRequest.builder()
-                .itemName(input)
-                .price(new BigDecimal(205800.00))
-                .tax(10.00)
-                .vat(15.00)
-                .discount(20.00)
-                .isItemOnSale(true)
-                .discountOnSale(10.00)
-                .quantity(5)
-                .description("good")
-                .build();
-        given(invoiceService.save(any(Invoice.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
-
-        // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/invoice")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newInvoice)));
-        // then - verify the result or output using assert statements
-        response.andDo(print()).
-                andExpect(status().isBadRequest());
-
-
-    }
 
 
     /**
@@ -152,7 +78,7 @@ public class InvoiceControllerTest {
      * @return the result or output using assert statements.
      */
     @Test
-    public void should_throw_exception_whenCreateInvoice_ifHttpRequestMethodNotSupported() throws Exception {
+    public void testShould_throw_exception_whenCreateInvoice_ifHttpRequestMethodNotSupported() throws Exception {
 
         InvoiceRequest newInvoice = InvoiceRequest.builder()
                 .itemName("jeans")
@@ -185,7 +111,7 @@ public class InvoiceControllerTest {
      * @return the result or output using assert statements.
      */
     @Test
-    public void should_throw_exception_whenCreateInvoice_ifMethodArgumentTypeMismatch() throws Exception {
+    public void testShould_throw_exception_whenCreateInvoice_ifMethodArgumentTypeMismatch() throws Exception {
 
         // given - precondition or setup
         int invoiceId = 1;
@@ -208,7 +134,7 @@ public class InvoiceControllerTest {
      */
 
     @Test
-    public void givenInvoiceObject_whenCreateInvoice_thenReturnaddInvoice() throws Exception {
+    public void testGivenInvoiceObject_whenCreateInvoice_thenReturnaddInvoice() throws Exception {
         InvoiceRequest invoiceRequest = InvoiceRequest.builder()
                 .itemName("jeans")
                 .price(new BigDecimal("98000.0"))
@@ -228,13 +154,11 @@ public class InvoiceControllerTest {
         double discountOnSale = invoiceRequest.getDiscountOnSale();
         int quantity = invoiceRequest.getQuantity();
 
-
         BigDecimal totalDiscount = (new BigDecimal(tax).add(new BigDecimal(vat)).subtract(new BigDecimal(discount)).subtract(new BigDecimal(discountOnSale)));
         BigDecimal subTotal = (price.multiply(totalDiscount).divide(new BigDecimal("100.0")));
         BigDecimal total = (price.add(subTotal));
         BigDecimal alltotal = total.multiply(new BigDecimal(quantity));
         invoiceRequest.setTotal(alltotal);
-
 
         // then - verify the result or output using assert statements
         when(invoiceService.save(any())).thenReturn(invoice);
@@ -256,40 +180,6 @@ public class InvoiceControllerTest {
     }
 
 
-    /**
-     * JUnit test to Create new Invoice  which throws exception
-     * Negative scenario Test to Create new Invoice
-     * InvoiceRequest a request Dto which give the request   if Tax Is Greater Than 99 and fraction must be 2 digit,
-     * then it throws  MethodArgumentNotValidException.
-     * return    the result or output using assert statements.
-     */
-
-    @ParameterizedTest
-    @ValueSource(doubles = {100.00, 99.999})
-    public void should_throw_exception_whenCreateInvoice_ifTaxIsGreaterThan99_thenReturnaddInvoiceFailed(double tax) throws Exception {
-        InvoiceRequest newInvoice = InvoiceRequest.builder()
-                .itemName("jeans")
-                .price(new BigDecimal("98000.0"))
-                .tax(tax)
-                .vat(15.00)
-                .discount(20.00)
-                .isItemOnSale(true)
-                .discountOnSale(10.00)
-                .quantity(5)
-                .description("good")
-                .build();
-        given(invoiceService.save(any(Invoice.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
-        // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/invoice")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newInvoice)));
-        // then - verify the result or output using assert statements
-        response.andDo(print()).
-                andExpect(status().isBadRequest());
-
-
-    }
 
     /**
      * Negative scenario to test Invoice using @ParameterizedTest  and @MethodSource Annotations
@@ -302,7 +192,7 @@ public class InvoiceControllerTest {
 
     @ParameterizedTest
     @MethodSource("invoice")
-    public void should_throw_exception_whenCreateInvoice_thenReturnaddInvoiceFailed(String itemName, BigDecimal price, double tax, double vat, double discount, double discountOnSale, int quantity) throws Exception {
+    public void testShould_throw_exception_whenCreateInvoice_thenReturnaddInvoiceFailed(String itemName, BigDecimal price, double tax, double vat, double discount, double discountOnSale, int quantity) throws Exception {
         InvoiceRequest newInvoice = InvoiceRequest.builder()
                 .itemName(itemName)
                 .price(price)
@@ -327,7 +217,6 @@ public class InvoiceControllerTest {
 
 
     }
-
     public static Stream<Arguments> invoice() {
         return Stream.of(
                 arguments("jeans/", new BigDecimal("9800000000000.00"), 100.00, 600.00, 120.00, 400.00, 0),
@@ -347,7 +236,7 @@ public class InvoiceControllerTest {
      */
     @ParameterizedTest
     @MethodSource("invoices")
-    public void CreateInvoice_thenReturnaddInvoiceFailed(String itemName, BigDecimal price, double tax, double vat, double discount, double discountOnSale, int quantity) throws Exception {
+    public void testCreateInvoice_thenReturnaddInvoiceFailed(String itemName, BigDecimal price, double tax, double vat, double discount, double discountOnSale, int quantity) throws Exception {
         InvoiceRequest newInvoice = InvoiceRequest.builder()
                 .itemName(itemName)
                 .price(price)
@@ -380,128 +269,13 @@ public class InvoiceControllerTest {
 
     }
 
-    /**
-     * JUnit test to Create new Invoice  which throws exception
-     * Negative scenario Test to Create new Invoice
-     * InvoiceRequest a request Dto which give the request   if Vat Is Greater Than 99 and fraction must be 2 digit,
-     * then it throws  MethodArgumentNotValidException.
-     *
-     * @return the result or output using assert statements.
-     */
-
-    @ParameterizedTest
-    @ValueSource(doubles = {100.00, 99.999})
-
-    public void should_throw_exception_whenCreateInvoice_ifvatIsGreaterThan99_thenReturnaddInvoiceFailed(Double vat) throws Exception {
-        InvoiceRequest newInvoice = InvoiceRequest.builder()
-                .itemName("jeans")
-                .price(new BigDecimal("98000.0"))
-                .tax(10.00)
-                .vat(vat)
-                .discount(20.00)
-                .isItemOnSale(true)
-                .discountOnSale(10.00)
-                .quantity(5)
-                .description("good")
-                .build();
-        given(invoiceService.save(any(Invoice.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
-        // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/invoice")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newInvoice)));
-        // then - verify the result or output using assert statements
-        response.andDo(print()).
-                andExpect(status().isBadRequest()
-                );
-    }
-
-
-    /**
-     * JUnit test to Create new Invoice  which throws exception
-     * Negative scenario Test to Create new Invoice
-     * InvoiceRequest a request Dto which give the request  if Discount  is Greater Than 99 or fraction must be 2 digit ,
-     * then it throws  MethodArgumentNotValidException.
-     *
-     * @return the result or output using assert statements.
-     */
-    @ParameterizedTest
-    @ValueSource(doubles = {100.00, 99.999})
-    public void should_throw_exception_whenCreateInvoice_ifDiscountIsGreaterThan99_thenReturnaddInvoiceFailed(double discount) throws Exception {
-        InvoiceRequest newInvoice = InvoiceRequest.builder()
-                .itemName("jeans")
-                .price(new BigDecimal("98000.0"))
-                .tax(10.00)
-                .vat(15.00)
-                .discount(discount)
-                .isItemOnSale(true)
-                .discountOnSale(10.00)
-                .quantity(5)
-                .description("good")
-                .build();
-        given(invoiceService.save(any(Invoice.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
-        // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/invoice")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newInvoice)));
-        // then - verify the result or output using assert statements
-        response.andDo(print()).
-                andExpect(status().isBadRequest());
-
-    }
-
-
-    /**
-     * JUnit test to Create new Invoice  which throws exception
-     * Negative scenario Test to Create new Invoice
-     * InvoiceRequest a request Dto which give the request if Quantity Is Greater Than 99999999 or zero  ,
-     * then it throws  MethodArgumentNotValidException.
-     * return the result or output using assert statements.
-     */
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, 999999999})
-    public void should_throw_exception_whenCreateInvoice_ifQuantityIsGreaterThan99999999OrZero_thenReturnaddInvoiceFailed(Integer quantity) throws Exception {
-        InvoiceRequest newInvoice = InvoiceRequest.builder()
-                .itemName("jeans")
-                .price(new BigDecimal("98000.0"))
-                .tax(10.00)
-                .vat(15.00)
-                .discount(10.00)
-                .isItemOnSale(true)
-                .discountOnSale(10.00)
-                .quantity(quantity)
-                .total(new BigDecimal("98000.0"))
-                .description("good")
-                .build();
-
-        given(invoiceService.save(any(Invoice.class)))
-                .willAnswer((invocation) -> invocation.getArgument(0));
-        // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/invoice")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(newInvoice)));
-
-        // then - verify the result or output using assert statements
-        response.andDo(print()).
-                andExpect(status().isBadRequest());
-
-    }
-
-    public static Stream<Integer> quantityChecks() {
-        return Stream.of(
-                0, 999999999);
-
-    }
-
 
     /*
      * JUnit   Test to  find Invoice By Id.
      * @return  This returns Invoice of  particular Id
      */
     @Test
-    public void givenInvoice_whenfindInvoiceById_thenReturnfindById() throws Exception {
+    public void testGivenInvalidInvoiceId_whenfindInvoiceById_thenReturnInvoice()throws Exception {
         // given - precondition or setup
         int invoiceId = 1;
         Invoice newInvoice = Invoice.builder()
@@ -552,7 +326,7 @@ public class InvoiceControllerTest {
      * @throws InvoiceNotFoundException  If an Invoice of specific Id is not found
      */
     @Test
-    public void givenInvalidInvoiceId_whenfindInvoiceById_thenReturnEmpty() throws Exception {
+    public void  testGivenInvalidInvoiceId_whenfindInvoiceById_thenInvoiceNotFound() throws Exception {
         int invoiceId = 1;
         Invoice newInvoice = Invoice.builder()
                 .itemName("jeans")
@@ -580,11 +354,10 @@ public class InvoiceControllerTest {
     /**
      * JUnit test To get list of all Invoices
      * created arraylist of Invoices and add invoice into it
-     *
      * @return list of all Invoices ,result or output using assert statements .
      */
     @Test
-    public void givenListOfInvoices_whenGetAllInvoice_thenReturnInvoiceList() throws Exception {
+    public void testGetInvoicesShouldReturnListOfInvoices() throws Exception {
         // given - precondition or setup
         List<Invoice> listOfInvoice = new ArrayList<>();
         listOfInvoice.add(Invoice.builder()
@@ -623,7 +396,6 @@ public class InvoiceControllerTest {
         given(invoiceService.getAllInvoice()).willReturn(listOfInvoice);
         ResultActions response = mockMvc.perform(get("/invoice"));
         response.andExpect(status().isOk())
-                .andDo(print())
                 .andExpect(jsonPath("$.size()",
                         is(listOfInvoice.size())));
 

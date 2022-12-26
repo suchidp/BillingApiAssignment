@@ -39,6 +39,7 @@ public class GlobalExceptionHandler {
 	 * @param request the current request
 	 * @return a  ResponseEntity for the response to use
      */
+    /*
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Object> handleHttpRequestMethodNotSupported(
             HttpRequestMethodNotSupportedException ex, WebRequest request) {
