@@ -30,7 +30,7 @@ public class InvoiceResponse {
         invoiceResponse.setDiscount(entity.getDiscount());
         invoiceResponse.setItemOnSale(entity.isItemOnSale());
         invoiceResponse.setDiscountOnSale(entity.getDiscountOnSale());
-        invoiceResponse.setTimestamp(entity.getTimestamp().now());
+        invoiceResponse.setTimestamp(LocalDateTime.now());
         invoiceResponse.setDescription(entity.getDescription());
         invoiceResponse.setQuantity(entity.getQuantity());
         invoiceResponse.setTotal(entity.getTotal());
@@ -38,5 +38,3 @@ public class InvoiceResponse {
     }
 
 }
-
-

@@ -1,9 +1,11 @@
 package com.billingapi.service;
+
 import com.billingapi.model.Invoice;
 import com.billingapi.repository.InvoiceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +31,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         int quantity = invoice.getQuantity();
 
         log.info("conversion into bigdecimals");
-        BigDecimal totalDiscount  = (BigDecimal .valueOf(tax).add(BigDecimal .valueOf(vat)).subtract(BigDecimal .valueOf(discount)).subtract(BigDecimal .valueOf(discountOnSale)));
+        BigDecimal totalDiscount = (BigDecimal.valueOf(tax).add(BigDecimal.valueOf(vat)).subtract(BigDecimal.valueOf(discount)).subtract(BigDecimal.valueOf(discountOnSale)));
         log.info("totalDiscount is " + totalDiscount);
-        BigDecimal subTotal =  ( price.multiply(totalDiscount).divide(BigDecimal .valueOf(100)));
+        BigDecimal subTotal = (price.multiply(totalDiscount).divide(BigDecimal.valueOf(100)));
         log.info("subTotal is " + subTotal);
         BigDecimal total = (price.add(subTotal));
         log.info("total is " + total);
-        BigDecimal alltotal = total.multiply(BigDecimal .valueOf(quantity));
+        BigDecimal alltotal = total.multiply(BigDecimal.valueOf(quantity));
         log.info("alltotal is " + alltotal);
         invoice.setTotal(alltotal);
         return invoiceRepository.save(invoice);
